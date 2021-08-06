@@ -51,6 +51,9 @@ export default class Cards {
                 this.firstCard = { ref: ref, index: i, card: currentCard};
                 return false;
             }
+            else if (this.firstCard.index === i) {
+                return;
+            }
             else if (this.firstCard !== null) {
                 this.timeout = true;
 
