@@ -1,5 +1,7 @@
 import Game from './game.js'
-import Cards from './cards.js'
 
-const game = new Game();
-const cards = new Cards();
+// initalise game on page load
+(function init() {
+    const game = new Game();
+    game.new();
+})();

@@ -4,10 +4,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link type="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="assets/css/style.css">
     <title>Snap</title>
 </head>
 <body>
-    <script src="assets/js/main.js" type="module"></script>
+    <div id="content-wrapper">
+        <h1>Snap!</h1>
+        <div id="stats-container">
+            <div id="rating">
+                <i class="material-icons star">star</i>
+                <i class="material-icons star">star</i>
+                <i class="material-icons star">star</i>
+            </div>
+            <div id="moves">0 Moves</div>
+            <div id="timer">0 Mins 0 Secs</div>
+            <div id="reset">
+                <i class="material-icons material-icons-outlined">restart_alt</i>
+            </div>
+        </div>
+        <div id="game-container"></div>
+    </div>
+    <script src="assets/js/main.js" type="module" defer></script>
 </body>
 </html>
