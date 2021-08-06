@@ -1,19 +1,36 @@
 import Cards from './cards.js';
-
+import _ from './select.js';
 
 export default class Game {
+
     constructor() {
-        this.cards = new Cards();
-    }
+        this.interval = null;
+    };
 
     new() {
-        this.cards.shuffleCards();
-        this.cards.createHTML();
-        this.addListeners();
-    }
+        this.time = 0;
+        this.cards = new Cards();
+        this.cards.reset();
+        this.cards.shuffle();
+        this.cards.render();
+        this.listeners();
+        this.timer();
+    };
 
-    addListeners() {
-        const cards = document.querySelectorAll('.card');
-        cards.forEach((card, i) => card.addEventListener('click', this.cards.flipCard));
-    }
+    reset() {
+        clearInterval(this.interval);
+        this.new();
+    };
+
+    listeners() {
+        _.q('#reset').onclick = () => this.reset();
+        _.qAll('.card').forEach(card => card.addEventListener('click', event => this.cards.check(event)));
+    };
+
+    timer() {
+        this.interval = setInterval(() => {
+            _.q('#timer').innerText = `${Math.floor(this.time / 60)} Mins ${this.time % 60} Secs`;
+            this.time++;
+        }, 1000);
+    };
 };

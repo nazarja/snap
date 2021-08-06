@@ -1,42 +1,58 @@
-import cards from './cards.json' assert { type: "json" };
+import cards from '../json/cards.json' assert { type: "json" };
+import _ from './select.js';
 
 export default class Cards {
+
     constructor() {
-        this.gameContainer = document.querySelector('#game-container');
+        this.moves = 0;
+        this.container = _.q('#game-container');
+        this.movesContainer = _.q('#moves');
         this.cards = [...cards, ...cards];
     }
 
-    shuffleCards() {
-        this.cards.forEach((card, i) => {
+    shuffle() {
+        this.cards.forEach((card, i, cards) => {
             const randomIndex = Math.floor(Math.random() * i);
-            [this.cards[i], this.cards[randomIndex]] = [this.cards[randomIndex], this.cards[i]];
+            [cards[i], cards[randomIndex]] = [cards[randomIndex], cards[i]];
         });
-    }
+    };
 
-    createHTML() {
-        for (let i of this.cards) {
-            this.gameContainer.innerHTML += this.createCard(i);
-        };
-    }
+    render() {
+        for (let card of this.cards) 
+            this.container.innerHTML += this.new(card);
+    };
 
-    createCard(i) {
+    new(card) {
         return (
             `
-            <div class="card" data-ref="${i.ref}">
+            <div class="card" data-ref="${card.ref}">
                 <div class="card-inner">
                     <div class="card-front">
                         <img src="assets/img/devicon.png">
                     </div>
                     <div class="card-back">
-                        <img src="assets/img/${i.filename}.png">
+                        <img src="assets/img/${card.filename}.png">
                     </div>
                 </div>
             </div>
             `
         );
-    }
+    };
 
-    flipCard(event) {
-        console.log(event.currentTarget.dataset.ref)
-    }
+    check(event) {
+        const ref = event.currentTarget.dataset.ref;
+        console.log(ref);
+        this.setMoves();
+    };
+
+    setMoves() {
+        _.q('#moves').innerText = `${++this.moves} Moves`;
+    };
+
+    reset() {
+        while (this.container.firstChild)
+            this.container.removeChild(this.container.firstChild);
+            
+        this.movesContainer.innerText = '0 Moves';
+    };
 }
