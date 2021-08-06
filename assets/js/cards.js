@@ -13,23 +13,30 @@ export default class Cards {
         });
     }
 
-    <div class="flip-card">
-  <div class="flip-card-inner">
-    <div class="flip-card-front">
-      <img src="img_avatar.png" alt="Avatar" style="width:300px;height:300px;">
-    </div>
-    <div class="flip-card-back">
-        <img src="img_avatar.png" alt="Avatar" style="width:300px;height:300px;">
-    </div>
-  </div>
-</div>
-
     createHTML() {
-        for (let card of this.cards) {
-            const div = document.createElement('div');
-            div.classList = 'card';
-            div.innerText = card.ref;
-            this.gameContainer.appendChild(div);
-        }
+        for (let i of this.cards) {
+            this.gameContainer.innerHTML += this.createCard(i);
+        };
+    }
+
+    createCard(i) {
+        return (
+            `
+            <div class="card" data-ref="${i.ref}">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="assets/img/devicon.png">
+                    </div>
+                    <div class="card-back">
+                        <img src="assets/img/${i.filename}.png">
+                    </div>
+                </div>
+            </div>
+            `
+        );
+    }
+
+    flipCard(event) {
+        console.log(event.currentTarget.dataset.ref)
     }
 }

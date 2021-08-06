@@ -9,5 +9,11 @@ export default class Game {
     new() {
         this.cards.shuffleCards();
         this.cards.createHTML();
+        this.addListeners();
+    }
+
+    addListeners() {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach((card, i) => card.addEventListener('click', this.cards.flipCard));
     }
 };
