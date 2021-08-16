@@ -10,7 +10,7 @@ export default class Game {
 
     new() {
         this.time = 0;
-        this.heading = 'SNAP!';
+        this.heading.innerText = 'SNAP!';
         this.cards = new Cards();
         this.cards.reset();
         this.cards.shuffle();
