@@ -4,13 +4,13 @@ import _ from './select.js';
 export default class Cards {
 
     constructor() {
+        this.count = 0;
         this.moves = 0;
-        this.timeout = false;
+        this.paused = false;
         this.firstCard = null;
         this.container = _.q('#game-container');
-        this.movesContainer = _.q('#moves');
+        this.movesElement = _.q('#moves');
         this.cards = [...cards, ...cards];
-        this.count = 0;
     }
 
     shuffle() {
@@ -43,41 +43,52 @@ export default class Cards {
     };
 
     check(event, i) {
-        if (!this.timeout) {
+        // run if game not paused
+        if (!this.paused) {
             const [ref, currentCard] = [event.currentTarget.dataset.ref, event.currentTarget];
             this.flip(currentCard, 180);
 
+            // if we have no cards chosen
             if (this.firstCard === null) {
                 this.firstCard = { ref: ref, index: i, card: currentCard};
                 return false;
             }
+            // if the same card is clicked again - return
             else if (this.firstCard.index === i) {
                 return;
             }
+            // if we are choosing the second card
             else if (this.firstCard !== null) {
-                this.timeout = true;
+                // pause the game to disallow any further clicks
+                this.paused = true;
 
+                // if the cards match
                 if (ref === this.firstCard.ref) {
                     _.q('h1').style.color = 'goldenrod';
                     setTimeout(() => _.q('h1').style.color = '#fff', 1000);
+                    // stop turned cards from being clicked
                     currentCard.style.pointerEvents = 'none';
                     this.firstCard.card.style.pointerEvents = 'none';
                     this.firstCard = null;
-                    this.timeout = false;
+                    this.paused = false;
                     this.count++;
 
+                    // if the game is over
                     if (this.count === this.cards.length / 2) return true;
                 }
+                // flip both cards back over
                 else {
                     setTimeout(() => {
                         this.flip(currentCard, 0);
                         this.flip(this.firstCard.card, 0);
                         this.firstCard = null;
-                        this.timeout = false;
+
+                        // unpause game
+                        this.paused = false;
                     }, 1500);
                 };
 
-                this.incrementMoves();
+                this.movesElement.innerText = `${++this.moves} Moves`;
             };
         };
     };
@@ -87,14 +98,10 @@ export default class Cards {
         inner.style.transform = `rotateY(${degrees}deg)`;
     }
 
-    incrementMoves() {
-        _.q('#moves').innerText = `${++this.moves} Moves`;
-    };
-
     reset() {
         while (this.container.firstChild)
             this.container.removeChild(this.container.firstChild);
 
-        this.movesContainer.innerText = '0 Moves';
+        this.movesElement.innerText = '0 Moves';
     };
 }

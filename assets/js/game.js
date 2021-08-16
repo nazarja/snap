@@ -5,7 +5,6 @@ export default class Game {
 
     constructor() {
         this.interval = null;
-        this.stars = _.qAll('.star');
         this.heading = _.q('h1');
     };
 
@@ -16,7 +15,6 @@ export default class Game {
         this.cards.reset();
         this.cards.shuffle();
         this.cards.render();
-        this.setStars(3, .5, 'white');
         this.listeners();
         this.timer();
     };
@@ -29,6 +27,7 @@ export default class Game {
     listeners() {
         _.q('#reset').onclick = () => this.reset();
         _.qAll('.card').forEach((card, i) => card.addEventListener('click', event => {
+            // call the check card method and if return value is true // game is over
             if (this.cards.check(event, i, this.interval)) this.done();
         }));
     };
@@ -40,22 +39,8 @@ export default class Game {
         }, 1000);
     };
 
-    done() {
-       const rating = this.cards.moves > 18
-        ? 1
-        : this.cards.moves > 12
-            ? 2
-            : 3
-        
+    done() {    
         clearInterval(this.interval);
         this.heading.innerText = 'You Won!'
-        this.setStars(rating, 1, 'gold');
-    };
-
-    setStars(rating, opacity, color) {
-        for (let i = 0; i < rating; i++) {
-            this.stars[i].style.opacity = opacity;
-            this.stars[i].style.color = color;
-        };
     };
 };
