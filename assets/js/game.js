@@ -12,9 +12,6 @@ export default class Game {
         this.time = 0;
         this.heading.innerText = 'SNAP!';
         this.cards = new Cards();
-        this.cards.reset();
-        this.cards.shuffle();
-        this.cards.render();
         this.listeners();
         this.timer();
     };
@@ -26,10 +23,11 @@ export default class Game {
 
     listeners() {
         _.q('#reset').onclick = () => this.reset();
-        _.qAll('.card').forEach((card, i) => card.addEventListener('click', event => {
-            // call the check card method and if return value is true // game is over
-            if (this.cards.check(event, i, this.interval)) this.done();
-        }));
+        setTimeout(() => {
+            _.qAll('.card').forEach((card, i) => card.addEventListener('click', event => {
+                if (this.cards.check(event, i, this.interval)) this.done();
+            }));
+        }, 1000);
     };
 
     timer() {

@@ -1,5 +1,5 @@
-import cards from '../json/cards.json' assert { type: "json" };
 import _ from './select.js';
+
 
 export default class Cards {
 
@@ -10,7 +10,18 @@ export default class Cards {
         this.firstCard = null;
         this.container = _.q('#game-container');
         this.movesElement = _.q('#moves');
+        this.initGame()
+    }
+
+    async initGame() {
+        const cards = await fetch(window.location.href + '/assets/json/cards.json')
+            .then(res => res.json())
+            .then(data => data);
+
         this.cards = [...cards, ...cards];
+        this.reset();
+        this.shuffle();
+        this.render();
     }
 
     shuffle() {
@@ -51,12 +62,10 @@ export default class Cards {
             // if we have no cards chosen
             if (this.firstCard === null) {
                 this.firstCard = { ref: ref, index: i, card: currentCard};
-                return false;
-            }
-            // if the same card is clicked again - return
-            else if (this.firstCard.index === i) {
                 return;
             }
+            // if the same card is clicked again - return
+            else if (this.firstCard.index === i) return;
             // if we are choosing the second card
             else if (this.firstCard !== null) {
                 // pause the game to disallow any further clicks
